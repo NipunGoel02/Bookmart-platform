@@ -9,7 +9,7 @@
       src="https://kit.fontawesome.com/64d58efce2.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="signup page .css" />
+    <link rel="stylesheet" href="/stylesheets/signup page .css" />
     <title>Sign in & Sign up Form</title>
   </head>
   <body>
@@ -17,11 +17,11 @@
         
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="/After Login.html" class="sign-in-form" method="post">
+          <form action="/login" class="sign-in-form" method="post">
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input   type="text" placeholder="Username" name="username" required/>
+              <input   type="email" placeholder="email" name="email" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
@@ -56,7 +56,7 @@
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" name="npassword" required/>
+              <input type="password" placeholder="Password" name="password" required/>
             </div>
             <input type="submit" class="btn" value="Sign up" />
             <p class="social-text">Or Sign up with social platforms</p>
@@ -109,6 +109,6 @@
       </div>
     </div>
 
-    <script src="sing up page.js"></script>
+    <script src="/javascripts/sing up page.js"></script>
   </body>
 </html>
