@@ -1,89 +1,144 @@
- <!DOCTYPE html>
+<!-- buy.ejs -->
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buy Books - Bookmart</title>
-    <link rel="stylesheet" href="/stylesheets/Buy.css">
+    <title>Buy Books</title>
 </head>
 <body>
-    <div class="container">
-        <h1>Select Your City</h1>
-        <div class="dropdown-container">
-            <select id="city-dropdown">
-                <option value="">Select City</option>
-                <option value="Agra">Agra</option>
-                <option value="Ahmedabad">Ahmedabad</option>
-                <option value="Allahabad">Allahabad</option>
-                <option value="Aligarh">Aligarh</option>
-                <option value="Amritsar">Amritsar</option>
-                <option value="Aurangabad">Aurangabad</option>
-                <option value="Bareilly">Bareilly</option>
-                <option value="Bangalore">Bangalore</option>
-                <option value="Bhopal">Bhopal</option>
-                <option value="Bhubaneswar">Bhubaneswar</option>
-                <option value="Chandigarh">Chandigarh</option>
-                <option value="Chennai">Chennai</option>
-                <option value="Coimbatore">Coimbatore</option>
-                <option value="Delhi">Delhi</option>
-                <option value="Dhanbad">Dhanbad</option>
-                <option value="Faridabad">Faridabad</option>
-                <option value="Ghaziabad">Ghaziabad</option>
-                <option value="Gurgaon">Gurgaon</option>
-                <option value="Guwahati">Guwahati</option>
-                <option value="Gwalior">Gwalior</option>
-                <option value="Howrah">Howrah</option>
-                <option value="Hyderabad">Hyderabad</option>
-                <option value="Indore">Indore</option>
-                <option value="Jaipur">Jaipur</option>
-                <option value="Jalandhar">Jalandhar</option>
-                <option value="Jabalpur">Jabalpur</option>
-                <option value="Jodhpur">Jodhpur</option>
-                <option value="Kanpur">Kanpur</option>
-                <option value="Kalyan-Dombivali">Kalyan-Dombivali</option>
-                <option value="Kolkata">Kolkata</option>
-                <option value="Kota">Kota</option>
-                <option value="Lucknow">Lucknow</option>
-                <option value="Ludhiana">Ludhiana</option>
-                <option value="Madurai">Madurai</option>
-                <option value="Meerut">Meerut</option>
-                <option value="Mira-Bhayandar">Mira-Bhayandar</option>
-                <option value="Moradabad">Moradabad</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Mysore">Mysore</option>
-                <option value="Nagpur">Nagpur</option>
-                <option value="Nashik">Nashik</option>
-                <option value="Navi Mumbai">Navi Mumbai</option>
-                <option value="Patna">Patna</option>
-                <option value="Pune">Pune</option>
-                <option value="Raipur">Raipur</option>
-                <option value="Rajkot">Rajkot</option>
-                <option value="Salem">Salem</option>
-                <option value="Solapur">Solapur</option>
-                <option value="Srinagar">Srinagar</option>
-                <option value="Surat">Surat</option>
-                <option value="Thane">Thane</option>
-                <option value="Thiruvananthapuram">Thiruvananthapuram</option>
-                <option value="Tiruchirappalli">Tiruchirappalli</option>
-                <option value="Varanasi">Varanasi</option>
-                <option value="Vasai-Virar">Vasai-Virar</option>
-                <option value="Vijayawada">Vijayawada</option>
-                <option value="Visakhapatnam">Visakhapatnam</option>
-                <option value="Warangal">Warangal</option>
-                <option value="Others">Others</option> <!-- Added 'Others' option -->
-            </select>
-        </div>
-        
-        <!-- Manual city input, hidden by default -->
-        <div id="manual-city-input" class="manual-city" style="display: none;">
-            <input type="text" id="manual-city" placeholder="Enter your city" />
-        </div>
-        
-        <div id="book-list" class="book-list">
-            <!-- Books will be displayed here -->
-        </div>
-    </div>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
 
-    <script src="/javascripts/buy-script.js"></script>
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 1.2em;
+            margin-right: 10px;
+        }
+
+        select {
+            padding: 10px;
+            font-size: 1em;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #book-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .book-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            transition: transform 0.2s;
+        }
+
+        .book-card:hover {
+            transform: scale(1.05);
+        }
+
+        .book-card h2 {
+            font-size: 1.5em;
+            color: #333;
+            margin: 0 0 10px;
+        }
+
+        .book-card p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .book-card button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .book-card button:hover {
+            background-color: #218838;
+        }
+
+        .no-books {
+            text-align: center;
+            font-size: 1.2em;
+            color: #666;
+        }
+    </style>
+
+    <h1>Select a City to View Available Books</h1>
+
+    <label for="city-select">Choose a city:</label>
+    <select id="city-select">
+        <option value="">--Select a City--</option>
+        <!-- Populate this with available cities from your database -->
+        <option value="Mumbai">Mumbai</option>
+        <option value="Delhi">Delhi</option>
+        <option value="Bangalore">Bangalore</option>
+        <!-- Add more cities as needed -->
+    </select>
+
+    <div id="book-list"></div>
+
+    <script>
+    document.getElementById('city-select').addEventListener('change', async function() {
+        const selectedCity = this.value;
+        const bookList = document.getElementById('book-list');
+        bookList.innerHTML = ''; // Clear previous books
+
+        if (selectedCity) {
+            try {
+                const response = await fetch(`/books?city=${selectedCity}`); // Fetch books for the selected city
+                const books = await response.json();
+
+                if (books.length > 0) {
+                    books.forEach(book => {
+                        const bookCard = document.createElement('div');
+                        bookCard.classList.add('book-card');
+                        bookCard.innerHTML = `
+                            <h2>${book.bookname}</h2>
+                            <p>Author: ${book.author}</p>
+                            <p>Price: $${book.price}</p>
+                            <button onclick="buyBook('${book._id}')">Buy</button>
+                        `;
+                        bookList.appendChild(bookCard);
+                    });
+                } else {
+                    bookList.innerHTML = `<p>No books available in ${selectedCity}.</p>`;
+                }
+            } catch (error) {
+                console.error("Error fetching books:", error);
+                bookList.innerHTML = `<p>Error fetching books. Please try again later.</p>`;
+            }
+        }
+    });
+
+    function buyBook(bookId) {
+        // Implement buy functionality (e.g., redirect to payment page)
+        console.log("Buying book with ID:", bookId);
+    }
+
+    </script>
 </body>
 </html>
