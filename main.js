@@ -181,44 +181,18 @@ app.get("/logout", function (req, res) {
         res.redirect("/");
     });
 });
-<<<<<<< HEAD
 
 app.get("/your-added-books", isLoggedIn, async function (req, res) {
     const books = await Book.find({ userId: req.session.user.id });
     const userId = req.session.userId;
-    const senderid = req.messages.sennderId;
-    res.render("your-added-books", { books, senderid });
-=======
-// Assuming express and mongoose are already set u
-// Fetch messages for a specific user's books
-app.get('/messages/:userId', async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const messages = await Message.find({ receiverId: userId }).populate('senderId', 'name'); // Modify as needed
-        res.json(messages);
-    } catch (err) {
-        res.status(500).send('Error fetching messages');
-    }
-});
-
-app.listen(3000, () => console.log('Server running on http://localhost:3000'));
-
-app.get("/your-added-books", isLoggedIn, async function (req, res) {
-    const books = await Book.find({ userId: req.session.user.id });
-    const userId = req.session.userId || req.user._id; 
-    res.render("your-added-books", { books , userId });
->>>>>>> aad9b3361ee8b2ae6be3515c96d527e712799da6
+    res.render("your-added-books", { books,  });
 });
 
 app.get("/chat/:sellerId", isLoggedIn, function(req,res){
     console.log(req.session.user.Id)
     res.render("chat", {sellerId:req.params.sellerId , userId:req.session.user.id });
 })
-<<<<<<< HEAD
  
-=======
-
->>>>>>> aad9b3361ee8b2ae6be3515c96d527e712799da6
 io.on('connection', (socket) => {
     console.log('New user connected:', socket.id);
 
@@ -267,7 +241,6 @@ io.on('connection', (socket) => {
         console.log('User disconnected:', socket.id);
     });
 });
-<<<<<<< HEAD
 app.get("/seller/messages", isLoggedIn, async (req, res) => {
     if (req.session.user.role !== 'seller') {
         return res.redirect("/"); // Ensure the user is a seller
@@ -280,20 +253,6 @@ app.get("/seller/messages", isLoggedIn, async (req, res) => {
 
     res.render("seller-messages", { messages });
 });
-server.listen(9000, () => {
+server.listen(7000, () => {
     console.log("Server is running on port 9000");
-=======
-app.get('/messages/:sellerId/:bookId', async (req, res) => {
-    const { sellerId, bookId } = req.params;
-    try {
-        const messages = await Message.find({ receiverId: sellerId, bookId: bookId });
-        res.json(messages);
-    } catch (err) {
-        console.error('Error fetching messages:', err);
-        res.status(500).send('Error fetching messages');
-    }
-});
-server.listen(3000, () => {
-    console.log("Server is running on port 3000");
->>>>>>> aad9b3361ee8b2ae6be3515c96d527e712799da6
 });

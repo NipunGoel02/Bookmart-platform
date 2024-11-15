@@ -49,10 +49,6 @@ const messageSchema = new mongoose.Schema({
     senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     receiverId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     message: String,
-<<<<<<< HEAD
-=======
-    bookId: { type: mongoose.Schema.Types.ObjectId, ref: 'Book' }, // Relates to a specific book
->>>>>>> aad9b3361ee8b2ae6be3515c96d527e712799da6
     timestamp: { type: Date, default: Date.now }
 });
 
