@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Seller</title>
+    <script src="/socket.io/socket.io.js"></script> <!-- Include Socket.IO client -->
+    <style>
+        /* Basic styles for the chat interface */
+        #chat {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 400px;
+            overflow-y: scroll; /* Allow scrolling for overflow */
+            background-color: #f9f9f9;
+        }
+        #messageInput {
+            width: 80%; /* Input field width */
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #sendButton {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat with Seller</h1>
+    <div id="chat"></div> <!-- Chat message display area -->
+    <input id="messageInput" type="text" placeholder="Type your message...">
+    <button id="sendButton">Send</button> <!-- Send button -->
+
+    <script>
+        const socket = io(); // Initialize Socket.IO client
+    
+        // Get sellerId and userId from server-side EJS
+        const sellerId = '<%= sellerId %>';
+        const userId = '<%= userId %>';
+        console.log('userId:', userId);
+        console.log('sellerId:', sellerId);
+
+        // Join the chat room for the seller
+        socket.emit('joinChat', sellerId);
+    
+        // Listen for incoming messages from the server
+        socket.on('receiveMessage', (data) => {
+            const chatDiv = document.getElementById('chat');
+            // Append the received message to the chat display area
+            chatDiv.innerHTML += `<p><strong>${data.senderId}:</strong> ${data.message}</p>`;
+            chatDiv.scrollTop = chatDiv.scrollHeight; // Scroll to the bottom of chat
+        });
+    
+        // Send message when the button is clicked
+        document.getElementById('sendButton').onclick = () => {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value; // Get the message from the input
+            if (message) {
+                // Emit the message with sellerId and senderId
+                socket.emit('sendMessage', { message, sellerId, senderId: userId });
+                messageInput.value = ''; // Clear the input field
+            }
+        };
+    
+        // Optional: Send message when the Enter key is pressed
+        document.getElementById('messageInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                document.getElementById('sendButton').click(); // Trigger send button click
+            }
+        });
+    </script>
+</body>
+</html>

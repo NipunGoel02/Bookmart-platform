@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Added Books</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex flex-col items-center p-6">
+    <h1 class="text-3xl font-bold text-blue-600 mb-8 animate-pulse">Your Added Books</h1>
+    <script>
+       fetch('http://localhost:3000/')
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data); // Use the data here
+        displayBooks(data); // Function to display data on the page
+    })
+    .catch((error) => console.error('Error:', error));
+
+    </script>
+    <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-4xl">
+        <% books.forEach(book => { %>
+            <li class="bg-white shadow-lg rounded-lg overflow-hidden transform transition duration-500 hover:scale-105">
+                <img src="/images/uploads/<%= book.image %>" alt="<%= book.bookname %>" class="w-full h-60 object-cover object-top<% books.forEach(book => { %>
+    <li class="bg-white shadow-lg rounded-lg overflow-hidden transform transition duration-500 hover:scale-105">
+        <img src="/images/uploads/<%= book.image %>" alt="<%= book.bookname %>" class="w-full h-60 object-cover object-top">
+        <div class="p-6">
+            <h2 class="text-2xl font-semibold text-gray-800"><%= book.bookname %></h2>
+            <p class="text-gray-600 mt-2">Author: <span class="font-medium"><%= book.author %></span></p>
+            <p class="text-gray-600 mt-2">Price: <span class="font-medium"><%= book.price %></span></p>
+            <p class="text-gray-600 mt-2">City: <span class="font-medium"><%= book.city %></span></p>
+            <p class="text-gray-600 mt-2">Logs: <span class="font-medium"><%= book.logs %></span></p>
+            <a href="messages/<%= sellerId%>/<%= userId%>" class="mt-4 bg-blue-500 text-white rounded px-4 py-2">Chat with Seller</a>
+        </div>
+    </li>
+<% }) %>">
+                <div class="p-6">
+                    <h2 class="text-2xl font-semibold text-gray-800"><%= book.bookname %></h2>
+                    <p class="text-gray-600 mt-2">Author: <span class="font-medium"><%= book.author %></span></p>
+                    <p class="text-gray-600 mt-2">Price: <span class="font-medium"><%= book.price %></span></p>
+                    <p class="text-gray-600 mt-2">City: <span class="font-medium"><%= book.city %></span></p>
+                </div>
+            </li>
+        <% }) %>
+    </ul>
+    <a href="/" class="mt-8 text-blue-500 hover:text-blue-700 transition duration-300 ease-in-out font-semibold text-lg">Back to Home</a>
+</body>
+</html>

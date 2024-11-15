@@ -1,144 +1,137 @@
-<!-- buy.ejs -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buy Books</title>
-</head>
-<body>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <style>
+        /* Keyframes for animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease-in-out;
+        }
+
+        /* Loader animation */
+        .loader::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Background gradient */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
         }
 
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-size: 1.2em;
-            margin-right: 10px;
-        }
-
-        select {
-            padding: 10px;
-            font-size: 1em;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-
-        #book-list {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .book-card {
-            background: white;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            margin: 10px;
-            padding: 20px;
-            width: 300px;
-            transition: transform 0.2s;
-        }
-
+        /* Card hover effect */
         .book-card:hover {
-            transform: scale(1.05);
-        }
-
-        .book-card h2 {
-            font-size: 1.5em;
-            color: #333;
-            margin: 0 0 10px;
-        }
-
-        .book-card p {
-            margin: 5px 0;
-            color: #555;
-        }
-
-        .book-card button {
-            background-color: #28a745;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .book-card button:hover {
-            background-color: #218838;
-        }
-
-        .no-books {
-            text-align: center;
-            font-size: 1.2em;
-            color: #666;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
     </style>
+</head>
 
-    <h1>Select a City to View Available Books</h1>
+<body class="font-poppins bg-gray-100 text-gray-800 min-h-screen flex flex-col items-center">
+    <h1 class="text-3xl font-semibold text-blue-600 mt-8 mb-4 animate-pulse">Select a City to View Available Books</h1>
 
-    <label for="city-select">Choose a city:</label>
-    <select id="city-select">
+    <label for="city-select" class="text-gray-700 mb-2">Choose a city:</label>
+    <select id="city-select" class="px-4 py-2 border border-gray-300 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6">
         <option value="">--Select a City--</option>
-        <!-- Populate this with available cities from your database -->
         <option value="Mumbai">Mumbai</option>
         <option value="Delhi">Delhi</option>
         <option value="Bangalore">Bangalore</option>
-        <!-- Add more cities as needed -->
     </select>
 
-    <div id="book-list"></div>
+    <div id="loading" class="loader mb-6" style="display: none;"></div>
+
+    <div id="book-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 max-w-7xl mx-auto px-4"></div>
 
     <script>
-    document.getElementById('city-select').addEventListener('change', async function() {
-        const selectedCity = this.value;
-        const bookList = document.getElementById('book-list');
-        bookList.innerHTML = ''; // Clear previous books
+        document.getElementById('city-select').addEventListener('change', async function () {
+            const selectedCity = this.value;
+            const bookList = document.getElementById('book-list');
+            const loader = document.getElementById('loading');
 
-        if (selectedCity) {
-            try {
-                const response = await fetch(`/books?city=${selectedCity}`); // Fetch books for the selected city
-                const books = await response.json();
+            bookList.innerHTML = '';
+            loader.style.display = selectedCity ? 'block' : 'none';
 
-                if (books.length > 0) {
-                    books.forEach(book => {
-                        const bookCard = document.createElement('div');
-                        bookCard.classList.add('book-card');
-                        bookCard.innerHTML = `
-                            <h2>${book.bookname}</h2>
-                            <p>Author: ${book.author}</p>
-                            <p>Price: ₹${book.price}</p>
-                            <button onclick="buyBook('${book._id}')">Buy</button>
-                        `;
-                        bookList.appendChild(bookCard);
-                    });
-                } else {
-                    bookList.innerHTML = `<p>No books available in ${selectedCity}.</p>`;
+            if (selectedCity) {
+                try {
+                    const response = await fetch(`/books?city=${selectedCity}`);
+                    const books = await response.json();
+                    console.log(books);
+                    loader.style.display = 'none';
+
+                    if (books.length > 0) {
+                        books.forEach((book, index) => {
+                            const bookCard = document.createElement('div');
+                            bookCard.classList.add(
+                                'fade-in-up',
+                                'book-card',
+                                'p-6',
+                                'bg-white',
+                                'rounded-lg',
+                                'shadow-lg',
+                                'transition-all',
+                                'duration-300',
+                                'flex',
+                                'flex-col',
+                                'items-center',
+                                'space-y-4'
+                            );
+                            bookCard.style.animationDelay = `${index * 0.1}s`;
+
+                            bookCard.innerHTML = `
+                                <img src="/images/uploads/${book.image}" alt="${book.bookname}"
+                                    class="w-48 h-60 rounded-lg object-cover object-top shadow-md mb-4">
+                                <h2 class="text-xl font-semibold text-gray-800 text-center">${book.bookname}</h2>
+                                <p class="text-sm text-gray-600 text-center">Author: ${book.author}</p>
+                                <p class="text-lg font-medium text-blue-600">₹${parseFloat(book.price).toFixed(2)}</p>
+                                <button onclick="buyBook('${book._id}')"
+                                    class="px-4 py-2 mt-4 text-white bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg hover:from-indigo-500 hover:to-blue-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    Buy
+                                </button>
+                                <a href="/chat/${book.sellerId}" class="mt-4 bg-blue-500 text-white rounded px-4 py-2">Chat with Seller</a>
+
+                            `;
+
+                            bookList.appendChild(bookCard);
+                        });
+                    } else {
+                        bookList.innerHTML = `
+                            <p class="no-books text-lg font-medium text-gray-500 mt-6">
+                                No books available in ${selectedCity}.
+                            </p>`;
+                    }
+                } catch (error) {
+                    loader.style.display = 'none';
+                    bookList.innerHTML = `<p class="no-books text-red-500">Error fetching books. Please try again later.</p>`;
+                    console.error("Error fetching books:", error);
                 }
-            } catch (error) {
-                console.error("Error fetching books:", error);
-                bookList.innerHTML = `<p>Error fetching books. Please try again later.</p>`;
             }
+        });
+
+        function buyBook(bookId) {
+            alert("Thank you for your purchase! You selected book ID: " + bookId);
         }
-    });
-
-    function buyBook(bookId) {
-        // Implement buy functionality (e.g., redirect to payment page)
-        console.log("Buying book with ID:", bookId);
-    }
-
     </script>
 </body>
+
 </html>

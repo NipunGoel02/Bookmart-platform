@@ -27,7 +27,13 @@
                     <a href="Login.html">Sell Books</a>
                     <a href="Login.html">Buy Books</a>
                 </div>
-                <a href="#">ACCOUNT</a>
+                <a href="/your-added-books">ACCOUNT</a>
+                <% if (user) { %>
+                    <a href="#">Welcome, <%= user.email %></a>
+                    <a href="/logout">Logout</a>
+                <% } else { %>
+                    <a href="/signup">Login</a>
+                <% } %>
                 <a href="#">WISHLIST</a>
             </nav>
 
@@ -175,13 +181,18 @@
             <hr>
             <p class="copy">Books selling@ 2024 - All rights reserved</p>
         </footer>
-        <div class="popup" id="popup">
+        <div class="popup" id="popup" >
             <div class="popup-content">
                 <span class="close" id="close-popup">&times;</span>
                 <h2>Please sign up or sign in to get information of books </h2>
                 <a href="/signup"> <input type="submit" value="Login" class="btns solid " /></a>
             </div>
         </div> 
+        <script>
+            // This variable is set based on whether the user is logged in or not
+            const isLoggedIn = <%= user ? true : false %>;
+        </script>
+        
         <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
         <script src="/javascripts/script.js"></script>
         <script src="https://unpkg.com/aos@next/dist/aos.js"></script>

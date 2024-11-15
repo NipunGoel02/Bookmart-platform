@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Messages</title>
+    <style>
+        #messages {
+            border: 1px solid #ccc;
+            padding: 10px;
+            height: 400px;
+            overflow-y: scroll;
+            background-color: #f9f9f9;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+        .message p {
+            margin: 0;
+        }
+        .message .sender {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Your Messages</h1>
+    <div id="messages">
+        <% messages.forEach(message => { %>
+            <div class="message">
+                <p class="sender"><%= message.senderId.name %> (Sent: <%= message.timestamp.toLocaleString() %>):</p>
+                <p><%= message.message %></p>
+            </div>
+        <% }) %>
+    </div>
+
+    <script>
+        // You can add further functionality here, like real-time updates with Socket.IO if needed
+    </script>
+</body>
+</html>

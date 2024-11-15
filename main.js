@@ -5,29 +5,59 @@ const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const mongoose = require('mongoose');
-const { User, Book } = require('./model');
+const { User, Book, Message } = require('./model'); // Added Message to the import
 const nodemailer = require('nodemailer');
+const session = require('express-session');
+const multer = require("multer");
+const crypto = require("crypto");
+const fs = require('fs');
+const http = require('http'); // Import http module
+const socketIo = require('socket.io'); // Import socket.io
+const uploadDir = path.join(__dirname, 'public', 'images', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+const server = http.createServer(app);
+const io = socketIo(server); // Initialize Socket.IO with the server
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadDir);
+    },
+    filename: function (req, file, cb) {
+        crypto.randomBytes(12, function (err, name) {
+            const fn = name.toString("hex") + path.extname(file.originalname);
+            cb(null, fn);
+        });
+    }
+});
+
+const upload = multer({ storage: storage });
 
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 
 app.get("/", function (req, res) {
-    res.render("index");
+    res.render("index", { user: req.session.user });
 });
 
 app.get("/signup", function (req, res) {
     res.render("signup page");
 });
 
-// Create a transporter for sending emails
 const transporter = nodemailer.createTransport({
-    service: 'gmail', // Use your email service
+    service: 'gmail',
     auth: {
-        user: 'nipungoel909@gmail.com', // Your email
-        pass: 'rrek hwbj rlzu nnww' // Your email password
+        user: 'nipungoel909@gmail.com',
+        pass: 'rrek hwbj rlzu nnww'
     }
 });
 
@@ -41,11 +71,10 @@ app.post("/create", async function (req, res) {
         name,
         email,
         password: hash,
-        verificationToken // Save the token
+        verificationToken
     });
     await user.save();
 
-    // Send verification email
     const verificationUrl = `http://localhost:3000/verify-email?token=${verificationToken}`;
     await transporter.sendMail({
         to: email,
@@ -68,11 +97,11 @@ app.get('/verify-email', async (req, res) => {
         const user = await User.findOne({ email: decoded.email });
 
         if (!user) {
-            return res.status(400).send("User  not found");
+            return res.status(400).send("User not found");
         }
 
-        user.isVerified = true; // Mark the email as verified
-        user.verificationToken = null; // Clear the token
+        user.isVerified = true;
+        user.verificationToken = null;
         await user.save();
 
         res.send("Email verified successfully");
@@ -82,6 +111,18 @@ app.get('/verify-email', async (req, res) => {
     }
 });
 
+function isLoggedIn(req, res, next) {
+    if (req.session.user) {
+        next();
+    } else {
+        res.redirect("/signup");
+    }
+}
+
+app.get("/login", isLoggedIn, function(req,res){
+    res.render("After_login")
+})
+
 app.post("/login", async function (req, res) {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.send("Something went wrong");
@@ -90,47 +131,139 @@ app.post("/login", async function (req, res) {
 
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (isMatch) {
+        req.session.user = { email: user.email, id: user._id };
         const token = jwt.sign({ email: user.email, id: user._id }, "shhhhhh");
         res.cookie("token", token);
-        res.render("After Login");
+        res.redirect("/");
     } else {
         res.send("Invalid password");
     }
 });
 
-app.get("/buy", function (req, res) {
+app.get("/buy", isLoggedIn, function (req, res) {
     res.render("Buy");
 });
 
-app.get("/sell", function (req, res) {
+app.get("/sell", isLoggedIn, function (req, res) {
     res.render("Sell");
 });
 
-app.post("/bookdata", async function (req, res) {
+app.post("/bookdata", upload.single("image"), async function (req, res) {
     let { name, phone, bookname, author, price, city } = req.body;
-
+    let image = req.file.filename;
     let book = new Book({
         name,
         phone,
         bookname,
         author,
         price,
-        city
+        city,
+        image,
+        userId: req.session.user.id
     });
     await book.save();
 
     res.redirect("/");
 });
 
-// Route to get books based on city
-app.get('/books/',  async (req, res) => {
-    const { city } = req.query; // Get the city from the query parameters
-
-    
-        // Fetch books that match the city
-        const books = await Book.find({ city: city }); // Assuming your book schema has a city field
-        res.json(books); // Send books data as JSON
-
+app.get('/books/', async (req, res) => {
+    const { city } = req.query;
+    const books = await Book.find({ city: city });
+    res.json(books);
 });
 
-app.listen(3000);
+app.get("/logout", function (req, res) {
+    req.session.destroy(err => {
+        if (err) {
+            return res.redirect("/"); 
+        }
+        res.clearCookie("token");
+        res.redirect("/");
+    });
+});
+// Assuming express and mongoose are already set u
+// Fetch messages for a specific user's books
+app.get('/messages/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params;
+        const messages = await Message.find({ receiverId: userId }).populate('senderId', 'name'); // Modify as needed
+        res.json(messages);
+    } catch (err) {
+        res.status(500).send('Error fetching messages');
+    }
+});
+
+app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+
+app.get("/your-added-books", isLoggedIn, async function (req, res) {
+    const books = await Book.find({ userId: req.session.user.id });
+    const userId = req.session.userId || req.user._id; 
+    res.render("your-added-books", { books , userId });
+});
+
+app.get("/chat/:sellerId", isLoggedIn, function(req,res){
+    console.log(req.session.user.Id)
+    res.render("chat", {sellerId:req.params.sellerId , userId:req.session.user.id });
+})
+
+io.on('connection', (socket) => {
+    console.log('New user connected:', socket.id);
+
+    // Join chat room for the seller
+    socket.on('joinChat', (sellerId) => {
+        socket.join(sellerId);
+        console.log(`User ${socket.id} joined chat room: ${sellerId}`);
+    });
+
+    // Handle sending a message
+    socket.on('sendMessage', async (data) => {
+        console.log("Message received on server:", data);
+    
+        // Validate if sellerId and senderId are valid ObjectIds
+        if (!mongoose.Types.ObjectId.isValid(data.senderId)) {
+            console.log("Invalid senderId format:", data.senderId);
+            return;
+        }
+    
+        if (!mongoose.Types.ObjectId.isValid(data.sellerId)) {
+            console.log("Invalid sellerId format:", data.sellerId);
+            return;
+        }
+    
+        // Save message to the database
+        const newMessage = new Message({
+            senderId: data.senderId,
+            receiverId: data.sellerId,
+            message: data.message
+        });
+        await newMessage.save();
+    
+        // Emit the message to the seller and the buyer
+        io.to(data.sellerId).emit('receiveMessage', {
+            senderId: data.senderId,
+            message: data.message
+        });
+        io.to(data.senderId).emit('receiveMessage', {
+            senderId: data.senderId,
+            message: data.message
+        });
+    });
+    
+    // Handle disconnect
+    socket.on('disconnect', () => {
+        console.log('User disconnected:', socket.id);
+    });
+});
+app.get('/messages/:sellerId/:bookId', async (req, res) => {
+    const { sellerId, bookId } = req.params;
+    try {
+        const messages = await Message.find({ receiverId: sellerId, bookId: bookId });
+        res.json(messages);
+    } catch (err) {
+        console.error('Error fetching messages:', err);
+        res.status(500).send('Error fetching messages');
+    }
+});
+server.listen(3000, () => {
+    console.log("Server is running on port 3000");
+});

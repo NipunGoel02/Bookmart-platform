@@ -4,33 +4,33 @@ var typed = new Typed(".multiple-text", {
     backSpeed:100,
     backDelay:1000,
     loop:true
-})
-document.getElementById("open-popup").onclick = function() {
-    document.getElementById("popup").style.display = "block";
-};
-document.getElementById("open-popups").onclick = function() {
-    document.getElementById("popup").style.display = "block";
-};
-document.getElementById("open-popupss").onclick = function() {
-    document.getElementById("popup").style.display = "block";
-};
-document.getElementById("open-popupsss").onclick = function() {
-    document.getElementById("popup").style.display = "block";
-};
-document.getElementById("open-popupssss").onclick = function() {
-    document.getElementById("popup").style.display = "block";
-};
-document.getElementById("open-popupsssss").onclick = function() {
-    document.getElementById("popup").style.display = "block";
-};
-document.getElementById("open-popupssssss").onclick = function() {
-    document.getElementById("popup").style.display = "block";
-};
-document.getElementById("open-popupsssssss").onclick = function() {
-    document.getElementById("popup").style.display = "block";
-};
+}) 
+const popupTriggers = [
+    "open-popup",
+    "open-popups",
+    "open-popupss",
+    "open-popupsss",
+    "open-popupssss",
+    "open-popupsssss",
+    "open-popupssssss",
+    "open-popupsssssss"
+];
 
-
+// Loop through each trigger and add the appropriate click event
+popupTriggers.forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.onclick = function() {
+            if (isLoggedIn) {
+                // Redirect to the login page if the user is logged in
+                window.location.href = "/login";
+            } else {
+                // Show the popup if the user is not logged in
+                document.getElementById("popup").style.display = "block";
+            }
+        };
+    }
+});
 
 document.getElementById("close-popup").onclick = function() {
     document.getElementById("popup").style.display = "none";
