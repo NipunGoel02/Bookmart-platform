@@ -61,3 +61,4 @@ function displayBooksForCity(cityName) {
         bookList.innerHTML = `<p>No books available for ${cityName}</p>`;
     }
 }
+    
