@@ -44,6 +44,18 @@ app.use(session({
     saveUninitialized: true,
     cookie: { secure: false }
 }));
+const MongoStore = require('connect-mongo');
+
+app.use(
+  session({
+    secret: 'your-secret-key', // Replace with your own secret
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: 'mongodb://127.0.0.1:27017/mongopractice', // Replace with your MongoDB connection string
+    }),
+  })
+);
 
 app.get("/", function (req, res) {
     res.render("index", { user: req.session.user });
@@ -253,6 +265,9 @@ app.get("/seller/messages", isLoggedIn, async (req, res) => {
 
     res.render("seller-messages", { messages });
 });
+app.get("/home", function(req,res){
+     res.redirect("/")
+})
 server.listen(7000, () => {
     console.log("Server is running on port 9000");
 });
