@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose')
-
-mongoose.connect(`mongodb+srv://nipungoel15:qahxnwKHzNPGrUwF@cluster0.p7n6x.mongodb.net/`)
+require("dotenv").config()
+mongoose.connect(process.env.MONGODB_URL)
 const { v4: uuidv4 } = require('uuid'); // If using UUID
 
 const generateSellerId = () => {

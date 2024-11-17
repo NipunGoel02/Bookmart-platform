@@ -1,4 +1,5 @@
 const express = require('express');
+require("dotenv").config()
 const app = express();
 const path = require('path');
 const cookieParser = require("cookie-parser");
@@ -264,6 +265,7 @@ app.get("/seller/messages", isLoggedIn, async (req, res) => {
 app.get("/home", function(req,res){
      res.redirect("/")
 })
-server.listen(7000, () => {
+const PORT = process.env.PORT || 7000;
+server.listen( PORT, () => {
     console.log("Server is running on port 9000");
 });
