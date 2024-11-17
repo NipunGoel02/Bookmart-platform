@@ -84,7 +84,7 @@ app.post("/create", async function (req, res) {
     });
     await user.save();
 
-    const verificationUrl = `http://localhost:7000/verify-email?token=${verificationToken}`;
+    const verificationUrl = `${process.env.BASE_URL}/verify-email?token=${verificationToken}`;
     await transporter.sendMail({
         to: email,
         subject: 'Email Verification',
