@@ -1,7 +1,7 @@
 
 const mongoose = require('mongoose')
 
-mongoose.connect(`mongodb://127.0.0.1:27017/mongopractice`)
+mongoose.connect(`mongodb+srv://nipungoel15:qahxnwKHzNPGrUwF@cluster0.p7n6x.mongodb.net/`)
 const { v4: uuidv4 } = require('uuid'); // If using UUID
 
 const generateSellerId = () => {
@@ -24,7 +24,6 @@ const User = mongoose.model('User ', userSchema);
         type: String, 
         default: () => generateSellerId()  // Call generateSellerId() to create a random 24-character ID
     },
-    
     name: String,
     phone: Number,
     bookname: String,

@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const { User, Book, Message } = require('./model'); // Added Message to the import
 const nodemailer = require('nodemailer');
 const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const multer = require("multer");
 const crypto = require("crypto");
 const fs = require('fs');
@@ -39,23 +40,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.use(session({
+    store: MongoStore.create({
+        mongoUrl: 'mongodb+srv://nipungoel15:qahxnwKHzNPGrUwF@cluster0.p7n6x.mongodb.net/',
+        dbName: 'session', // Optional: specify the database name
+        ttl: 14 * 24 * 60 * 60, // Time-to-live for session documents in seconds (e.g., 14 days)
+      }),
     secret: 'your-secret-key',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false }
 }));
-const MongoStore = require('connect-mongo');
-
-app.use(
-  session({
-    secret: 'your-secret-key', // Replace with your own secret
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: 'mongodb://127.0.0.1:27017/mongopractice', // Replace with your MongoDB connection string
-    }),
-  })
-);
 
 app.get("/", function (req, res) {
     res.render("index", { user: req.session.user });
@@ -87,7 +81,7 @@ app.post("/create", async function (req, res) {
     });
     await user.save();
 
-    const verificationUrl = `http://localhost:3000/verify-email?token=${verificationToken}`;
+    const verificationUrl = `http://localhost:7000/verify-email?token=${verificationToken}`;
     await transporter.sendMail({
         to: email,
         subject: 'Email Verification',
