@@ -1,7 +1,13 @@
 
 const mongoose = require('mongoose')
 require("dotenv").config()
-mongoose.connect(process.env.MONGODB_URL)
+
+mongoose.connect(process.env.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ssl: true,
+    tlsInsecure: false // Only set to true if testing with self-signed certificates
+  })
 const { v4: uuidv4 } = require('uuid'); // If using UUID
 
 const generateSellerId = () => {
