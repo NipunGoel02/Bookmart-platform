@@ -308,7 +308,7 @@ app.get("/message/:sellerId",  async function(req,res){
 const messages = await Message.find({ receiverId: sellerId });
 res.render("seller-messages",{messages})
 })
-const PORT = process.env.PORT || 3000;
+const PORT =   process.env.PORT || 3000;
 server.listen( PORT, () => {
     console.log("Server is running on port 9000");
 });

@@ -9,14 +9,17 @@
     <title>Animated Portfolio Website HTML CSS JS | Codehal</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
 
 
     <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
-
+   
 <body>
     <div class="image">
+
         <header class="header">
             <a href="#" class="logo">𝓑𝓸𝓸𝓴𝓶𝓪𝓻𝓽</a>
             <nav class="navbar">
@@ -32,7 +35,22 @@
                 <% } else { %>
                     <a style="--i:5;"  href="/signup">Login</a>
                 <% } %>
+               
+
             </nav>
+            <div class="menu-icon" id="menuIcon">
+                ☰
+              </div>
+              <div class="sidebar" id="sidebar">
+                <div class="close-btn" id="closeBtn">&times;</div>
+                <ul>
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">About</a></li>
+                  <li><a href="#">Services</a></li>
+                  <li><a href="#">Contact</a></li>
+                </ul>
+              </div>
+              <div class="overlay" id="overlay"></div>
 
         </header>
         <section class="home">

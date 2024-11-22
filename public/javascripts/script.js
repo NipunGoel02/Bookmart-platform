@@ -5,6 +5,18 @@ var typed = new Typed(".multiple-text", {
     backDelay:1000,
     loop:true
 }) 
+const menuIcon = document.getElementById('menuIcon');
+const sidebar = document.getElementById('sidebar');
+const closeBtn = document.getElementById('closeBtn');
+menuIcon.addEventListener('click', () => {
+    sidebar.classList.add('active');
+    menuIcon.style.display = 'none'; // Hide menu icon
+  });
+  
+    closeBtn.addEventListener('click', () => {
+    sidebar.classList.remove('active');
+    menuIcon.style.display = 'block'; // Show menu icon
+  });
 const popupTriggers = [
     "open-popup",
     "open-popups",
@@ -69,3 +81,4 @@ window.onclick = function(event) {
            dropdownContent.style.display = 'none';
        }
    });
+   // Open sidebar

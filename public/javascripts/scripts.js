@@ -47,3 +47,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
+const menuIcon = document.getElementById('menuIcon');
+const sidebar = document.getElementById('sidebar');
+const closeBtn = document.getElementById('closeBtn');
+
+/
+
+

@@ -14,17 +14,17 @@
         <% books.forEach(book => { %>
             <li class="bg-white shadow-lg rounded-lg overflow-hidden transform transition duration-500 hover:scale-105" id="book-<%= book._id %>">
                 <img src="/images/uploads/<%= book.image %>" alt="<%= book.bookname %>" class="w-full h-60 object-cover object-top">
-                <div class="p-6">
+                <div class="p-6 w-full">
                     <h2 class="text-2xl font-semibold text-gray-800"><%= book.bookname %></h2>
                     <p class="text-gray-600 mt-2">Author: <span class="font-medium"><%= book.author %></span></p>
                     <p class="text-gray-600 mt-2">Price: <span class="font-medium"><%= book.price %></span></p>
-                    <p class="text-gray-600 mt-2">City: <span class="font-medium"><%= book.city %></span></p>
-                    <p class="text-gray-600 mt-2">Logs: <span class="font-medium"><%= book.logs %></span></p>
+                    <p class="text-gray-600 mt-2 mb-8">City: <span class="font-medium"><%= book.city %></span></p>
+                    
 
                     <!-- Message container for each book -->
-                    <div id="messages-<%= book._id %>"></div>
                     
-                    <a href="/api/getMessages" class="mt-4 bg-blue-500 text-white rounded px-4 py-2">Chat with Seller</a>
+                    
+                    <a href="/api/getMessages" class="mt-2 bg-blue-500 text-white rounded px-4 py-2">Chat with Buyer</a>
                 </div>
             </li>
         <% }) %>

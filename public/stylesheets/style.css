@@ -19,6 +19,124 @@ body {
 
 }
 
+  
+  /* Reset and base styles */
+
+  .menu-icon {
+    font-size: 30px;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    color: #fff;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  
+  .menu-icon.hidden {
+    transform: scale(0);
+    opacity: 0;
+    pointer-events: none;
+  }
+  
+  .sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px; /* Initially hidden off-screen */
+    width: 300px;
+    height: 100%;
+    background: rgba(44, 62, 80, 0.9); /* Semi-transparent */
+    backdrop-filter: blur(10px); /* Blur effect */
+    box-shadow: -2px 0 15px rgba(0, 0, 0, 0.5);
+    transition: right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    transform-origin: right center;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar ul li {
+    margin: 20px 0;
+    position: relative;
+  }
+  
+  .sidebar ul li a {
+    text-decoration: none;
+    color: #ecf0f1;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    transition: color 0.3s ease;
+  }
+  
+  .sidebar ul li a:hover {
+    color: #d6f109;
+  }
+  
+  /* Futuristic underline effect */
+  .sidebar ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background: #1abc9c;
+    transition: width 0.4s ease;
+  }
+  
+  .sidebar ul li a:hover::after {
+    width: 100%;
+  }
+  
+  .close-btn {
+    font-size: 24px;
+    color: #ecf0f1;
+    cursor: pointer;
+    align-self: flex-end; /* Align close button to the top-right */
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+  }
+  
+  .close-btn:hover {
+    transform: rotate(90deg); /* Rotate effect on hover */
+    color: #e74c3c;
+  }
+  
+  /* Sidebar visible */
+  .sidebar.active {
+    right: 0;
+  }
+  
+  /* Overlay for blur background effect */
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 50;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  
+  .overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+  
+  
 .image{
     background-image: url(/images/creative-different-books-arrange\ \(3\).jpg);
     background-position: center;
@@ -152,6 +270,7 @@ body {
      color: #00559A;
 }
 .availabe{
+    color: black;
     font-size: 30px;
     font-weight: 800;
     font-style: italic;
@@ -424,14 +543,19 @@ hr{
     background-color: #4d84e2;
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: 1400px) {
     /* Navbar */
+    .navbar {
+       display: none;
+    }
     .header {
         padding: 20px 5%;
     }
 
     .logo {
+        font-weight: 800;
         font-size: 24px;
+        color: black;
     }
 
     .navbar a {
@@ -468,58 +592,6 @@ hr{
     }
 }
 
-@media (max-width: 480px) {
-    /* Navbar */
-    .header {
-        padding: 15px 5%;
-    }
-
-    .logo {
-        font-size: 20px;
-    }
-
-    .navbar a {
-        font-size: 14px;
-        margin-left: 10px;
-    }
-
-    /* Home Section */
-    .home-content h1 {
-        font-size: 20px;
-    }
-
-    .home-content h4 {
-        font-size: 16px;
-    }
-
-    .btn {
-        width: 120px;
-        height: 40px;
-        font-size: 12px;
-    }
-
-    /* Popup */
-    .popup-content {
-        width: 100%;
-        margin: 20% auto;
-    }
-
-    .item-front img {
-        width: 150px;
-        height: 220px;
-    }
-
-    /* Footer */
-    footer {
-        padding: 50px 0 20px;
-        font-size: 12px;
-    }
-
-    .col {
-        flex-basis: 100%;
-        padding: 5px;
-    }
-}
  
  .dropdown {
      display: flex;
