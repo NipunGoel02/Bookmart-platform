@@ -21,6 +21,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 const server = http.createServer(app);
 const io = socketIo(server); // Initialize Socket.IO with the server
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, uploadDir);
@@ -84,7 +85,7 @@ app.post("/create", async function (req, res) {
     });
     await user.save();
 
-    const verificationUrl = `${process.env.BASE_URL}/verify-email?token=${verificationToken}`;
+    const verificationUrl = ` https://drive-download-20241108t171457z-001.onrender.com/verify-email?token=${verificationToken}`;
     await transporter.sendMail({
         to: email,
         subject: 'Email Verification',
@@ -154,7 +155,7 @@ app.get("/buy", isLoggedIn, function (req, res) {
 });
 
 app.get("/sell", isLoggedIn, function (req, res) {
-    res.render("Sell");
+    res.render("Sell", { user: req.session.user });
 });
 
 app.post("/bookdata", upload.single("image"), async function (req, res) {
@@ -196,7 +197,44 @@ app.get("/your-added-books", isLoggedIn, async function (req, res) {
     const userId = req.session.userId;
     res.render("your-added-books", { books,  });
 });
-
+app.get("/api/getMessages", async (req, res) => {
+    const { sellerId, buyerId } = req.query;
+  
+    try {
+      const messages = await Message.find({
+        $or: [
+          { sender_id: sellerId, receiver_id: buyerId },
+          { sender_id: buyerId, receiver_id: sellerId },
+        ],
+      }).sort({ timestamp: 1 });
+      res.render("seller-messages", {
+        messages: messages,
+        sellerId: sellerId,
+        buyerId: buyerId,
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Error fetching messages: " + error.message });
+    }
+   
+  });
+  
+  app.post("/api/sendMessage", async (req, res) => {
+    const { sender_id, receiver_id, message } = req.body;
+  
+    if (!sender_id || !receiver_id || !message) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+  
+    try {
+      const newMessage = new Message({ sender_id, receiver_id, message });
+      await newMessage.save();
+  
+      res.status(201).json({ success: true, message: "Message sent!" });
+    } catch (error) {
+      res.status(500).json({ error: "Error saving message: " + error.message });
+    }
+  });
+  
 app.get("/chat/:sellerId", isLoggedIn, function(req,res){
     console.log(req.session.user.Id)
     res.render("chat", {sellerId:req.params.sellerId , userId:req.session.user.id });
@@ -265,7 +303,12 @@ app.get("/seller/messages", isLoggedIn, async (req, res) => {
 app.get("/home", function(req,res){
      res.redirect("/")
 })
-const PORT = process.env.PORT || 7000;
+app.get("/message/:sellerId",  async function(req,res){
+    const sellerId = req.params.sellerId; // Or get it from the logged-in user's session
+const messages = await Message.find({ receiverId: sellerId });
+res.render("seller-messages",{messages})
+})
+const PORT = 9000;
 server.listen( PORT, () => {
     console.log("Server is running on port 9000");
 });

@@ -5,48 +5,421 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sell Your Book</title>
     <link rel="stylesheet" href="/stylesheets/Sell.css">
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #e0eafc, #cfdef3);
+            color: #3e2723;
+            display: flex;
+            height: auto;
+            align-items: center;
+            justify-content: center;
+            min-height: 100%;
+            overflow-y: auto; 
+        }
+        
+.navbar {
+    display: flex; /* Horizontal layout */
+    align-items: center; /* Align links vertically */
+    justify-content: flex-end; /* Align links to the right */
+    gap: 20px; /* Spacing between links */
+}
+
+.header {
+    background-color: #22282b; /* Black background */
+    color: white; /* White text */
+    position: fixed; /* Fixed at the top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it's on top */
+    padding:  20px 10%; /* Add some padding for spacing */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+    transition: background-color 0.5s ease; /* Smooth background color change */
+
+    align-items: center; /* Vertically center items */
+    justify-content: space-between; /* Space out logo and links */
+}
+
+
+.header:hover {
+    background-color: rgba(0, 0, 0, 0.9); /* Darker background on hover */
+}
+
+.header .logo{
+    font-family: "Cursive", serif;
+    font-size: 26px;
+    font-weight: bold;
+    color: white; /* Logo text color */
+    text-decoration: none; /* Remove underline */
+    animation: fadeIn 1s ease; /* Fade-in effect */
+    align-self: center; 
+}
+
+/* Navigation Bar Styles */
+.navbar {
+    display: flex; /* Horizontal layout */
+    align-items: center; /* Align links vertically */
+    justify-content:  flex-end; /* Align links to the right */
+    gap: 20px; /* Spacing between links */
+    flex-grow: 1;
+}
+
+.navbar a {
+    display: inline-block;
+    font-size: 18px;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 35px;
+    transition: 0.3s;
+    animation: slideTop 0.5s ease forwards;
+    animation-delay: calc(.2s * var(--i));
+}
+
+/* Hover Animation */
+.navbar a:hover {
+    color: #ffcc00; /* Change color on hover */
+    transform: translateY(-5px); /* Subtle lift animation */
+}
+
+.navbar a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 2px;
+    background: #ffcc00; /* Highlight color */
+    transition: all 0.3s ease; /* Smooth animation */
+}
+
+.navbar a:hover::after {
+    width: 100%; /* Expand underline on hover */
+}
+
+/* Dropdown Menu */
+.dropdown-content {
+    position: absolute;
+    display: none; /* Initially hidden */
+    background-color: rgba(0, 0, 0, 0.9); /* Semi-transparent background */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Add depth */
+    padding: 10px 0;
+    border-radius: 5px; /* Rounded corners */
+    animation: fadeIn 0.5s ease; /* Smooth fade-in animation */
+}
+
+.navbar .dropbtn:hover + .dropdown-content,
+.dropdown-content:hover {
+    display: block; /* Show dropdown on hover */
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 20px; /* Padding for dropdown items */
+    color: white;
+    font-size: 16px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: #333; /* Darken on hover */
+    color: #ffcc00; /* Highlight text */
+}
+
+/* Keyframes for Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideTop {
+    0%{
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    100%{
+        transform: translateY(0px);
+        opacity: 1;
+    }
+    
+}
+
+
+        .container {
+            align-items: flex-start;
+            flex-wrap: nowrap;
+            margin-top: 121px;
+            margin-bottom: 0px;
+            display: flex;
+            width: 90%;
+            max-width: 1200px;
+            background: #f4e4d4;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            animation: fadeIn 1.5s ease-in-out;
+            align-items: stretch;
+        }
+
+        .image-container {
+            flex: 1;
+            background: url('/images/bookshelf.jpg') no-repeat center center / cover;
+            animation: slideInLeft 1.5s ease-out;
+            min-height: 100%;
+            background-size: cover;
+            background-position: center;
+            height: 100px;
+        }
+        .image-container  img {
+            height: auto;
+
+        }
+        .form-container {
+            flex: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 2rem;
+        
+            height: auto;
+        }
+
+        .form-container h1 {
+            font-size: 2.5rem;
+            margin: 0 0 1.5rem 0;
+            text-align: center;
+            color: #3e2723;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            color: #3e2723;
+            background: #fff9f2;
+            border: 2px solid #d6a57c;
+            border-radius: 5px;
+            outline: none;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        .form-group input:focus, 
+        .form-group select:focus {
+            box-shadow: 0 0 8px rgba(153, 102, 51, 0.7);
+            border-color: #805a3b;
+        }
+
+        .form-group label {
+            position: absolute;
+            top: 50%;
+            left: 1rem;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            color: #805a3b;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label,
+        .form-group select:focus + label,
+        .form-group select:not([value=""]) + label {
+            top: -10px;
+            left: 0.75rem;
+            font-size: 0.85rem;
+            color: #3e2723;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            font-size: 1.2rem;
+            background: #805a3b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        button:hover {
+            background: #3e2723;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .image-container {
+                height: 200px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="form-container">
-        <h1>Sell Your Book</h1>
-        <form   action="/bookdata"   method="post" id="sellForm" enctype="multipart/form-data">
-            <div class="form-group">
-                <input type="text" id="name" name="name" required>
-                <label for="name">Your Name</label>
-            </div>
-            <div class="form-group">
-                <input type="tel" id="phone" name="phone" required>
-                <label for="phone">Phone Number</label>
-            </div>
-            <div class="form-group">
-                <input type="text"  name="bookname" required>
-                <label for="bookName">Book Name</label>
-            </div>
-            <div class="form-group">
-                <input type="text" id="author" name="author" required>
-                <label for="author">Author</label>
-            </div>
-            <div class="form-group">
-                <select id="city" name="city" required>
-                    <option value="" disabled selected>Select City</option>
-                    <option value="Delhi">Delhi</option>
-                    <option value="Mumbai">Mumbai</option>
-                    <option value="Bangalore">Bangalore</option>
-                    <option value="Chennai">Chennai</option>
-                </select>
-                <label for="city">Select City</label>
-            </div>
-            <div class="form-group">
-                <input type="number" id="price" name="price" required>
-                <label for="price">Price (INR)</label>
-            </div>
-            <div class="form-group">
-                <input type="file" id="image" name="image" required>
-                <label for="image">upload image</label>
-            </div>
-            <button type="submit">Submit</button>
-        </form>
+    
+    <div>
+        <header class="header">
+            <a href="#" class="logo">𝓑𝓸𝓸𝓴𝓶𝓪𝓻𝓽</a>
+            <nav class="navbar">
+                <a href="/" style="--i:1;">HOME</a>
+                <a href="#" style="--i:2;">ABOUT</a>
+                <a style="--i:3;"  href="/buy" class="dropbtn">BUY</a>
+                <a style="--i:4;"  href="/sell" class="dropbtn">SELL</a>
+                <div class="dropdown-content">
+                    <a href="Login.html">Sell Books</a>
+                    <a href="Login.html">Buy Books</a>
+                </div>
+                <a href="/your-added-books">ACCOUNT</a>
+                <% if (user) { %>
+                    <a href="#">Welcome, <%= user.email %></a>
+                    <a href="/logout">Logout</a>
+                <% } else { %>
+                    <a href="/signup">Login</a>
+                <% } %>
+            </nav>
+        </header>
     </div>
-    <script src="/javascripts/scris.js"></script>
+    <div class="container">
+        <div class="image-container">
+            <img src="./images/bookmartsell.jpg" alt="">
+        </div>
+        <div class="form-container">
+            <h1 style="margin-top: 0px;">Sell Your Book</h1>
+            <form action="/bookdata" method="post" id="sellForm" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="text" id="name" name="name" required>
+                    <label for="name">Your Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" name="phone" required>
+                    <label for="phone">Phone Number</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="bookname" required>
+                    <label for="bookName">Book Name</label>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="author" name="author" required>
+                    <label for="author">Author</label>
+                </div>
+                <div class="form-group">
+                    <select id="city" name="city" required>
+                        <option value="" disabled selected></option>
+                        <option value="Delhi">Delhi</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Bangalore">Bangalore</option>
+                        <option value="Chennai">Chennai</option>
+                    </select>
+                    <label for="city">Select City</label>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="price" name="price" required>
+                    <label for="price">Price (INR)</label>
+                </div>
+                <div class="form-group">
+                    <input type="file" id="image" name="image" required>
+                    <label for="image">Upload Image</label>
+                </div>
+                <button type="button" id="submitBtn">Submit</button>
+            </form>
+            <div id="finalStep" style="display: none; margin-top: 1.5rem;">
+                <img id="qrCode" src="./images/qr.png" alt="QR Code" style="width: 150px; margin-bottom: 1rem;">
+                <div class="form-group">
+                    <input type="text" id="referenceNo" name="referenceNo" required>
+                    <label for="referenceNo">Reference Number</label>
+                </div>
+                <button type="submit"  id="finalizeBtn">Finalize</button>
+            </div>
+            
+        </div>
+    </div>
+    <script>
+        const submitBtn = document.getElementById("submitBtn");
+        const finalizeBtn = document.getElementById("finalizeBtn");
+        const finalStep = document.getElementById("finalStep");
+        const sellForm = document.getElementById("sellForm");
+    
+        // Show QR code and finalize section on submit
+        submitBtn.addEventListener("click", () => {
+            // Validate form inputs before proceeding
+            if (sellForm.checkValidity()) {
+                submitBtn.style.display = "none";
+                finalStep.style.display = "block";
+            } else {
+                alert("Please fill out all fields before proceeding.");
+            }
+        });
+    
+        // Handle finalize click
+        finalizeBtn.addEventListener("click", () => {
+            const referenceNo = document.getElementById("referenceNo").value;
+    
+            if (!referenceNo) {
+                alert("Please enter the reference number to proceed.");
+                return;
+            }
+    
+            // Submit the form data with the reference number
+            const formData = new FormData(sellForm);
+            formData.append("referenceNo", referenceNo);
+    
+            fetch("/bookdata", {
+                method: "POST",
+                body: formData,
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        alert("Your book has been added successfully!");
+                        // Optionally, redirect to a success page
+                        window.location.href = "/";
+                    } else {
+                        alert("Failed to add your book. Please try again.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                    alert("An error occurred. Please try again later.");
+                });
+        });
+    </script>
 </body>
 </html>

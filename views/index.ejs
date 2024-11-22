@@ -22,19 +22,16 @@
             <nav class="navbar">
                 <a href="#" style="--i:1;">HOME</a>
                 <a href="#" style="--i:2;">ABOUT</a>
-                <a style="--i:3;"  href="#services" class="dropbtn">Services</a>
-                <div class="dropdown-content">
-                    <a href="Login.html">Sell Books</a>
-                    <a href="Login.html">Buy Books</a>
-                </div>
-                <a href="/your-added-books">ACCOUNT</a>
+                <a style="--i:3;"  href="/Buy" class="dropbtn">BUY</a>
+                <a style="--i:4;"  href="/Sell" class="dropbtn">SELL</a>
+                 
+                <a style="--i:5;" href="/your-added-books">ACCOUNT</a>
                 <% if (user) { %>
-                    <a href="#">Welcome, <%= user.email %></a>
-                    <a href="/logout">Logout</a>
+                    <a  style="--i:4;" href="#">Welcome, <%= user.email %></a>
+                    <a style="--i:5;"  href="/logout">Logout</a>
                 <% } else { %>
-                    <a href="/signup">Login</a>
+                    <a style="--i:5;"  href="/signup">Login</a>
                 <% } %>
-                <a href="#">WISHLIST</a>
             </nav>
 
         </header>

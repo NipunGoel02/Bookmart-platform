@@ -24,7 +24,7 @@
                     <!-- Message container for each book -->
                     <div id="messages-<%= book._id %>"></div>
                     
-                    <a href="/messages/<%= book.sellerId %>" class="mt-4 bg-blue-500 text-white rounded px-4 py-2">Chat with Seller</a>
+                    <a href="/api/getMessages" class="mt-4 bg-blue-500 text-white rounded px-4 py-2">Chat with Seller</a>
                 </div>
             </li>
         <% }) %>
@@ -34,14 +34,14 @@
 
     <script>
         // Fetch user ID and messages for each book
-        fetch('http://localhost:9000/message')
+        fetch('https://drive-download-20241108t171457z-001.onrender.com/message')
             .then(response => response.json())
             .then(data => {
                 const userId = data.userId;
 
                 // Now fetch messages using the user ID for each book
                 <% books.forEach(book => { %>
-                    fetch(`http://localhost:3000/messages/${userId}/${'<%= book.sellerId %>'}`)
+                    fetch(`https://drive-download-20241108t171457z-001.onrender.com/messages/${userId}/${'<%= book.sellerId %>'}`)
                         .then(response => response.json())
                         .then(messages => {
                             const messagesContainer = document.getElementById('messages-<%= book._id %>');
