@@ -73,14 +73,14 @@ form.sign-in-form {
 
 .title {
   font-size: 2.2rem;
-  color: #D2B48C;
+  color: #5155B6;
   margin-bottom: 10px;
 }
 
 .input-field {
   max-width: 380px;
   width: 100%;
-  background-color: #efeaea;
+  background-color:  #F0F0F0;
   margin: 10px 0;
   height: 55px;
   border-radius: 55px;
