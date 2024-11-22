@@ -44,10 +44,17 @@
               <div class="sidebar" id="sidebar">
                 <div class="close-btn" id="closeBtn">&times;</div>
                 <ul>
-                  <li><a href="#">Home</a></li>
+                  <li><a  href="/">Home</a></li>
                   <li><a href="#">About</a></li>
-                  <li><a href="#">Services</a></li>
-                  <li><a href="#">Contact</a></li>
+                  <li><a href="/Buy">BUY</a></li>
+                  <li><a href="/Sell">SELL</a></li>
+                  <li><a href="/your-added-books">ACCOUNT</a></li>
+                  <% if (user) { %>
+                    <li><a  href="#">Welcome, <%= user.email %></a></li>
+                    <li><a  href="/logout">Logout</a></li>
+                <% } else { %>
+                    <li><a style="--i:5;"  href="/signup">Login</a></li>
+                <% } %>
                 </ul>
               </div>
               <div class="overlay" id="overlay"></div>
